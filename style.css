@@ -1412,12 +1412,11 @@ img {
 .sidebar {
   position: fixed;
   top: 0;
-  left: -260px; /* hidden */
+  left: 0; /* hidden */
   width: 260px;
   height: 100vh;
   background: linear-gradient(#2f7ec7, #1e5fa3);
-  transition: left 0.3s ease;
-  z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
 .sidebar.active {
@@ -1425,13 +1424,12 @@ img {
 }
 @media (max-width: 768px) {
   .sidebar {
-    width: 200px;   /* smaller sidebar */
-    left: -200px;
+    transform: translateX(-100%);
+    width: 220px;   /* smaller sidebar */
+    z-index: 1000;
   }
 
   .sidebar.active {
-    left: 0;
+    transform: translateX(0);
   }
 }
-
-
