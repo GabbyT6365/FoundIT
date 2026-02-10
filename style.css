@@ -1391,3 +1391,22 @@ img {
     display: none;
   }
 }
+.menu-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block;
+    font-size: 24px;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar.active {
+    display: block;
+  }
+}
+
