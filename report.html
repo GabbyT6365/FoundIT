@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Lost Item | FoundIT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="page fade-in">
+
+  <!-- HEADER -->
+  <header class="top-header">
+      <div class="logo-area">
+          <img src="" class="logo">
+          <h1>FoundIT</h1>
+      </div>
+  </header>
+
+  <main class="report-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <img src="imahes/STI.png.png" class="sti-logo">
+      <nav class="side-nav">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="about.html" class="nav-btn">About Us</a>
+        <a href="report.html" class="nav-btn active">Report</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+    </aside>
+
+    <!-- FORM CONTAINER -->
+    <section class="report-container">
+      <div class="form-box">
+        
+        <h2 class="report-title">Report a Lost Item</h2>
+
+        <label>Item Name</label>
+        <input type="text" class="input-field" placeholder="Enter item name">
+
+        <label>Location</label>
+        <input type="text" class="input-field" placeholder="Where was it lost?">
+
+        <label>STI Email</label>
+        <input type="email" class="input-field" placeholder="example@stihub.com">
+
+        <label>Student ID</label>
+        <input type="text" class="input-field" placeholder="0123456789">
+
+
+        <label>Time</label>
+        <div class="time-row">
+          <input type="date" class="input-field">
+          <input type="time" class="input-field">
+        </div>
+
+        <label>Photo</label>
+        <div class="photo-upload">
+          <img id="preview">
+        </div>
+
+        <label class="upload-label">
+          <input type="file" id="fileInput" accept="image/*">
+          Change photo
+        </label>
+
+        <div class="form-buttons">
+          <button class="cancel-btn">Cancel</button>
+          <button class="submit-btn">Submit</button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+<script>
+  // Preview Uploaded Photo
+  const fileInput = document.getElementById("fileInput");
+  const preview = document.getElementById("preview");
+
+  fileInput.addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) preview.src = URL.createObjectURL(file);
+  });
+</script>
+
+</body>
+</html>

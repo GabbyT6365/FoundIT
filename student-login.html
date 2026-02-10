@@ -1,0 +1,51 @@
+<!-- /foundit/student-login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>FoundIT | Student Login</title>
+</head>
+<body class="page fade-in">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo"" alt="FoundIT logo">
+      <h1>FoundIT</h1>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <!-- MAIN SECTION -->
+  <main class="student-login-layout">
+
+    <!-- LEFT LOGO PANEL -->
+    <div class="left-panel">
+      <img src="imahes/foundit_logo.png.jpg" alt="FoundIT Logo" class="big-logo">
+    </div>
+
+    <!-- RIGHT LOGIN FORM -->
+    <div class="login-form-box">
+      <h2 class="login-title">STUDENT LOGIN</h2>
+
+      <form class="login-form">
+        <label for="student-number">Student Number</label>
+        <input type="text" id="student-number" name="student-number" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" class="form-btn" onclick="window.location.href='dashboard.html'">Login</button>
+        <button type="button" class="office-btn">Login with Office 365</button>
+      </form>
+    </div>
+
+  </main>
+
+</body>
+</html>

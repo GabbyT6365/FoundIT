@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Claim Item | FoundIT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="page fade-in">
+
+<div class="claim-container">
+<script>function goBack() {
+    const role = localStorage.getItem("userRole");
+
+    if (role === "student") {
+        window.location.href = "student-dashboard.html";
+    } else if (role === "admin") {
+        window.location.href = "admin-dashboard.html";
+    } else {
+        window.history.back();
+    }
+}
+</script>
+    <div class="claim-header">
+        <span class="close-btn" onclick="window.location.href='student-dashboard.html'">✖</span>
+    </div>
+
+    <div class="claim-left">
+        <img id="claimImagePreview" class="claim-photo" src="">
+    </div>
+
+    <div class="claim-right">
+
+        <h2 class="claim-title">Claim This Item</h2>
+
+        <label>Enter Name</label>
+        <input type="text" class="claim-input" placeholder="Enter your name">
+
+        <label>Enter Strand & Section</label>
+        <input type="text" class="claim-input" placeholder="e.g. ICT 12-3">
+
+        <label>STI Email</label>
+        <input type="email" class="claim-input" placeholder="example@stihub.com">
+
+        <label>Schedule Claiming</label>
+        <div class="schedule-row">
+            <select class="claim-input">
+                <option>Month</option><option>Jan</option><option>Feb</option><option>Mar</option>
+            </select>
+            <select class="claim-input">
+                <option>Day</option><option>1</option><option>2</option><option>3</option>
+            </select>
+            <input type="time" class="claim-input">
+        </div>
+
+        <label>Enter Student ID</label>
+        <input type="text" class="claim-input" placeholder="0123456789">
+
+        <button class="claim-btn">Claim</button>
+
+        <span class="close-btn" onclick="goBack()">✖</span>
+
+    </div>
+</div>
+
+<script>
+window.onload = function () {
+    let img = localStorage.getItem("claimImage");
+    if (img) {
+        document.getElementById("claimImagePreview").src = img;
+    }
+};
+</script>
+
+</body>
+</html>

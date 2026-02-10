@@ -1,0 +1,74 @@
+<!-- /foundit/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoundIT | Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+  <!-- SIDEBAR -->
+  <aside class="dashboard-sidebar">
+    <div class="side-logo">
+      <img src="imahes/foundit_logo.png.jpg" alt="FoundIT logo">
+      <h2>FoundIT</h2>
+    </div>
+    <nav class="dashboard-nav">
+      <a href="dashboard.html" class="active">Home</a>
+      <a href="report.html">Report</a>
+      <a href="#">Profile</a>
+      <a href="index.html">Logout</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="header-left">
+        <h1>Lost & Found Dashboard</h1>
+      </div>
+      <div class="header-right">
+        <div id="datetime"></div>
+        <div class="user-info">
+          <img src="imahes/user.png.png" alt="User icon">
+          <span>Student User</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- GRID OF ITEMS -->
+    <section class="item-grid">
+      <div class="item-card" onclick="goToClaimPage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuc3i8_odog_faxzu1zqJZPik4gmUpGPT9Ig&s')">
+        <img src="imahes/walletpng.jfif" alt="Lost Item">
+        <h3>Lost Wallet</h3>
+        <p>Found at Library - 10/31/2025</p>
+      </div>
+      <div class="item-card" onclick="goToClaimPage('https://ae01.alicdn.com/kf/Sbb6bbdf6c0ae497492082e3b2e0a35a5V.jpg')">
+        <img src="imahes/phonecase.png.avif" alt="Lost Item">
+        <h3>Phone Case</h3>
+        <p>Found near Cafeteria - 10/25/2025</p>
+      </div>
+      <div class="item-card" onclick="goToClaimPage('https://cdn.thewirecutter.com/wp-content/media/2025/04/BEST-USB-FLASH-DRIVES-2048px-9540.jpg?auto=webp&quality=75&width=1024')">
+        <img src="imahes/usbstick,png.jpg" alt="Lost Item">
+        <h3>USB Drive</h3>
+        <p>Found in Computer Lab - 11/01/2025</p>
+      </div>
+      <div class="item-card" onclick="goToClaimPage('https://niteize.com/media/wysiwyg/Blog/how-to-build-your-edc/EDC-Setups-big.jpg')">
+        <img src="imahes/keys.png.webp" alt="Lost Item">
+        <h3>Keys</h3>
+        <p>Found at Main Gate - 11/05/2025</p>
+      </div>
+      <script>
+      function goToClaimPage(image) {
+        localStorage.setItem("claimImage", image);
+        window.location.href = "claim.html";
+      }
+      </script>
+
+    </section>
+  </main>
+
+</body>
+</html>

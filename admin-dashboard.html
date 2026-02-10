@@ -1,0 +1,98 @@
+<!-- /foundit/admin-dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoundIT | Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="js/dashboard.js"></script>
+</head>
+<body class="page fade-in">
+
+  <!-- HEADER -->
+  <header class="dashboard-header">
+    <div class="header-left">
+      <img src="imahes/foundit_logo.png.jpg" alt="FoundIT Logo" class="small-logo" />
+      <h1>Lost & Found Items</h1>
+    </div>
+    <div class="header-right">
+      <img src="imahes/notif.png" alt="Notifications" class="icon" />
+      <img src="imahes/user.png.png" alt="Admin User" class="icon" />
+    </div>
+  </header>
+
+  <!-- MAIN DASHBOARD LAYOUT -->
+  <main class="admin-dashboard-layout">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="role">ADMIN</h2>
+      <nav class="side-nav">
+        <a href="admin-dashboard.html" class="nav-btn active">Home</a>
+        <a href="#" class="nav-btn">About Us</a>
+        <a href="report.html" class="nav-btn">Report</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+    </aside>
+
+    <!-- CENTER CONTENT -->
+    <section class="admin-center">
+      <div class="carousel">
+    <button class="arrow left-arrow">&#8249;</button>
+
+    <div class="carousel-track">
+        <img src="imahes/ID.jpg" alt="Item 1" />
+          <img src="imahes/walletpng.jfif" alt="Item 2" />
+          <img src="imahes/phonecase.png.avif" alt="Item 3" />
+    </div>
+
+    <button class="arrow right-arrow">&#8250;</button>
+</div>
+      </div>
+
+      <div class="reports-box">
+  <h3 class="reports-title">USER REPORTS</h3>
+
+  <div class="report-item">
+    <img src="imahes/user.png.png" alt="User Icon">
+    <span>Irish Hazel Arma - Lost ID near cafeteria</span>
+  </div>
+
+  <div class="report-item">
+    <img src="imahes/user.png.png" alt="User Icon">
+    <span>Ryben Lincoln Ganaban - Found wallet in library</span>
+  </div>
+
+  <div class="report-item">
+    <img src="imahes/user.png.png" alt="User Icon">
+    <span>John Gabriel Tribiana - Lost phone in computer lab</span>
+  </div>
+</div>
+
+    </section>
+    <div class="calendar-box">
+    <h3 class="calendar-title">Date & time</h3>
+
+    <div class="calendar-container">
+        <div class="calendar-grid">
+            <!-- Top header row (light blue) -->
+            <div class="header-cell">Sun</div>
+            <div class="header-cell">Mon</div>
+            <div class="header-cell">Tue</div>
+            <div class="header-cell">Wed</div>
+            <div class="header-cell">Thu</div>
+            <div class="header-cell">Fri</div>
+            <div class="header-cell">Sat</div>
+
+            <!-- Calendar body (empty cells for now) -->
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        </div>
+    </div>
+</div>
+    </aside>
+  </main>
+</body>
+</html>
