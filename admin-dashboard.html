@@ -26,7 +26,46 @@
   <main class="admin-dashboard-layout">
     <!-- LEFT SIDEBAR -->
     <button class="menu-btn">
+let touchStartX = 0;
+let touchEndX = 0;
 
+const sidebar = document.querySelector('.sidebar');
+
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const swipeDistance = touchEndX - touchStartX;
+
+  // Swipe RIGHT → open sidebar
+  if (swipeDistance > 70) {
+    sidebar.classList.add('active');
+  }
+
+  // Swipe LEFT → close sidebar
+  if (swipeDistance < -70) {
+    sidebar.classList.remove('active');
+  }
+  const overlay = document.querySelector('.overlay');
+
+// When opening
+sidebar.classList.add('active');
+overlay.classList.add('active');
+
+// When closing
+sidebar.classList.remove('active');
+overlay.classList.remove('active');
+
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('active');
+  overlay.classList.remove('active');
+});
     <aside class="sidebar">
       <h2 class="role">ADMIN</h2>
       <nav class="side-nav">
@@ -99,4 +138,5 @@
   </main>
 </body>
 </html>
+
 
