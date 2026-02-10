@@ -90,6 +90,20 @@ function handleSwipe() {
   if (swipeDistance < -70) {
     sidebar.classList.remove('active');
   }
+  const overlay = document.querySelector('.overlay');
+
+// When opening
+sidebar.classList.add('active');
+overlay.classList.add('active');
+
+// When closing
+sidebar.classList.remove('active');
+overlay.classList.remove('active');
+
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('active');
+  overlay.classList.remove('active');
+});
       function goToClaimPage(image) {
         localStorage.setItem("claimImage", image);
         window.location.href = "claim.html";
@@ -101,5 +115,6 @@ function handleSwipe() {
 
 </body>
 </html>
+
 
 
