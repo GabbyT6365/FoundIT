@@ -64,6 +64,32 @@
         <p>Found at Main Gate - 11/05/2025</p>
       </div>
       <script>
+        let touchStartX = 0;
+let touchEndX = 0;
+
+const sidebar = document.querySelector('.sidebar');
+
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const swipeDistance = touchEndX - touchStartX;
+
+  // Swipe RIGHT → open sidebar
+  if (swipeDistance > 70) {
+    sidebar.classList.add('active');
+  }
+
+  // Swipe LEFT → close sidebar
+  if (swipeDistance < -70) {
+    sidebar.classList.remove('active');
+  }
       function goToClaimPage(image) {
         localStorage.setItem("claimImage", image);
         window.location.href = "claim.html";
@@ -75,4 +101,5 @@
 
 </body>
 </html>
+
 
