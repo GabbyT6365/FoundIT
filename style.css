@@ -1331,3 +1331,63 @@ img {
   object-fit: cover;
   border-radius: 50%;
 }
+
+.circle-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+@media (max-width: 768px) {
+
+  /* STACK EVERYTHING */
+  body {
+    overflow-x: hidden;
+  }
+
+  .layout,
+  .main,
+  .content {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-radius: 0;
+  }
+
+  /* NAV BUTTONS */
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  nav a {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+
+  /* CARDS */
+  .card {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  /* FORMS */
+  input,
+  select,
+  textarea,
+  button {
+    width: 100%;
+  }
+
+}
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
