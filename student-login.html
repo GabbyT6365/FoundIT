@@ -6,6 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>FoundIT | Student Login</title>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyC4XLnRII7zlRc2xnkSpjIkWk-qEkkXiOM",
+    authDomain: "foundit-e6d39.firebaseapp.com",
+    projectId: "foundit-e6d39",
+    storageBucket: "foundit-e6d39.firebasestorage.app",
+    messagingSenderId: "169636403427",
+    appId: "1:169636403427:web:bb745e38def8690ea00dd6",
+    measurementId: "G-T30WLJNQ2P"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
 </head>
 <body class="page fade-in">
 
@@ -35,17 +60,19 @@
 
       <form class="login-form">
         <label for="student-number">Student Number</label>
-        <input type="text" id="student-number" name="student-number" required>
+        <input type="email" id="email" name="student-number" required>
 
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required>
-
-        <button type="button" class="form-btn" onclick="window.location.href='dashboard.html'">Login</button>
-        <button type="button" class="office-btn">Login with Office 365</button>
+        
+        <button type="button" onclick="registerUser()">Register</button>
+        <button type="button" class="form-btn" onclick="loginUser()">Login</button>
+        
       </form>
     </div>
 
   </main>
+  <script type="module" src="firebase.js"></script>
 
 </body>
 </html>
