@@ -3,12 +3,13 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyC4XLnRI7zIRc2xnkSpj1kkk-qEkkXiOM",
+  authDomain: "foundit-e6d39.firebaseapp.com",
+  projectId: "foundit-e6d39",
+  storageBucket: "foundit-e6d39.firebasestorage.app",
+  messagingSenderId: "169636403427",
+  appId: "1:169636403427:web:bb745e38def8690ea00dd6",
+  measurementId: "G-T30WLJNQ2P"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -31,3 +32,4 @@ window.loginUser = function () {
     .then(() => alert("Login successful!"))
     .catch(error => alert(error.message));
 };
+
