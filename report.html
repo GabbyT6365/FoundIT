@@ -69,8 +69,8 @@
         </label>
 
         <div class="form-buttons">
-          <button class="cancel-btn">Cancel</button>
-          <button class="submit-btn">Submit</button>
+          <button type="button" onclick="cancelReport()">Cancel</button>
+          <button type="submit">Submit</button>
         </div>
 
       </div>
@@ -86,8 +86,34 @@
     const file = this.files[0];
     if (file) preview.src = URL.createObjectURL(file);
   });
+function cancelReport() {
+    window.location.href = "dashboard.html";
+}
+  document.getElementById("reportForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const itemName = document.getElementById("itemName").value;
+    const location = document.getElementById("location").value;
+    const description = document.getElementById("description").value;
+
+    const report = {
+        itemName,
+        location,
+        description
+    };
+
+    let reports = JSON.parse(localStorage.getItem("reports")) || [];
+    reports.push(report);
+
+    localStorage.setItem("reports", JSON.stringify(reports));
+
+    alert("Item reported successfully!");
+
+    window.location.href = "dashboard.html";
+});
 </script>
 
 </body>
 </html>
+
 
