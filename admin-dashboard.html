@@ -1,0 +1,216 @@
+<!-- /foundit/admin-dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoundIT | Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page fade-in">
+
+  <!-- HEADER -->
+  <header class="dashboard-header">
+    <div class="header-left">
+      <img src="images/salaming logo.png" alt="FoundIT Logo" class="small-logo" />
+      <h1>Lost & Found Items</h1>
+    </div>
+    <div class="header-right">
+      <img src="images/notif.png" alt="Notifications" class="icon" />
+      <img src="images/user.png.png" alt="Admin User" class="icon" />
+    </div>
+  </header>
+
+  <!-- MAIN DASHBOARD LAYOUT -->
+  <main class="admin-dashboard-layout">
+    <aside class="sidebar">
+      <h2 class="role">ADMIN</h2>
+      <nav class="side-nav">
+        <a href="admin-dashboard.html" class="nav-btn active">Home</a>
+        <a href="about.html" class="nav-btn">About Us</a>
+        <a href="report.html" class="nav-btn" onclick="localStorage.setItem('reportReturnPage', 'admin-dashboard.html')">Report</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+
+      <button class="reset-btn" onclick="clearAllData()">Reset System</button>
+      <button class="reset-btn" onclick="logout()" style="margin-top:10px; background:#444;">Logout</button>
+    </aside>
+
+    <section class="admin-center">
+      <h2 class="section-title">USER REPORTS</h2>
+
+      <div class="reports-card">
+        <div id="adminReportsList"></div>
+      </div>
+      
+      <h2 class="section-title">CLAIM REQUESTS</h2>
+
+        <div class="reports-card">
+      <div id="adminClaimRequestsList"></div>
+      </div>
+    </section>
+
+    <aside class="right-panel">
+      <div class="datetime-card">
+        <h2>Date &amp; time</h2>
+      </div>
+
+      <div class="calendar-card">
+        <div class="calendar-header">
+          <button>&lt;</button>
+          <span>Month today</span>
+          <button>&gt;</button>
+        </div>
+
+        <div class="calendar-grid">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div class="green"></div><div class="green"></div><div></div><div></div><div></div>
+          <div></div><div></div><div class="red"></div><div class="red"></div><div></div><div class="red"></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+
+        <a href="calendar.html" class="calendar-link">View calendar</a>
+      </div>
+
+      <div class="schedule-card">
+        <h3>Schedule</h3>
+        <label><input type="radio"> Claim of "Blue notebook" tomorrow</label>
+        <label><input type="radio"> Claim of "Leather Wallet" by March 12, 2026</label>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+if (localStorage.getItem("userRole") !== "admin") {
+    alert("Access denied.");
+    window.location.href = "admin-login.html";
+}
+
+function renderReportedItemsOnAdminDashboard() {
+    const adminList = document.getElementById("adminReportsList");
+    if (!adminList) return;
+
+    const items = JSON.parse(localStorage.getItem("reportedItems")) || [];
+    adminList.innerHTML = "";
+
+    if (items.length === 0) {
+        adminList.innerHTML = `<p style="color:black;">No reports yet.</p>`;
+        return;
+    }
+
+    items.forEach(item => {
+        const report = document.createElement("div");
+        report.className = "report-item";
+
+        report.innerHTML = `
+            <strong>${item.title}</strong> - ${item.location}<br>
+            ${item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc}
+        `;
+
+        adminList.appendChild(report);
+    });
+}
+
+function renderClaimRequests() {
+    const claimList = document.getElementById("adminClaimRequestsList");
+    if (!claimList) return;
+
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+    claimList.innerHTML = "";
+
+    if (claimRequests.length === 0) {
+        claimList.innerHTML = `<p style="color:black;">No pending claim requests.</p>`;
+        return;
+    }
+
+    claimRequests.forEach(request => {
+        const requestCard = document.createElement("div");
+        requestCard.className = "claim-request-item";
+
+        requestCard.innerHTML = `
+            <div class="claim-request-info">
+                <strong>${request.itemTitle}</strong><br>
+                Claimant: ${request.claimantName}<br>
+                Section: ${request.claimantSection}<br>
+                Email: ${request.claimantEmail}<br>
+                Student ID: ${request.claimantStudentId}
+            </div>
+
+            <div class="claim-request-actions">
+                <button onclick="approveClaim(${request.id})">Approve</button>
+                <button onclick="rejectClaim(${request.id})">Reject</button>
+            </div>
+        `;
+
+        claimList.appendChild(requestCard);
+    });
+}
+
+function approveClaim(requestId) {
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+    const reportedItems = JSON.parse(localStorage.getItem("reportedItems")) || [];
+
+    const request = claimRequests.find(r => r.id === requestId);
+    if (!request) return;
+
+    const updatedItems = reportedItems.map(item => {
+        if (item.title === request.itemTitle) {
+            return {
+                ...item,
+                claimedBy: request.claimantName,
+                status: "claimed"
+            };
+        }
+        return item;
+    });
+
+    const remainingRequests = claimRequests.filter(r => r.id !== requestId);
+
+    localStorage.setItem("reportedItems", JSON.stringify(updatedItems));
+    localStorage.setItem("claimRequests", JSON.stringify(remainingRequests));
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+}
+
+function rejectClaim(requestId) {
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+    const remainingRequests = claimRequests.filter(r => r.id !== requestId);
+
+    localStorage.setItem("claimRequests", JSON.stringify(remainingRequests));
+
+    renderClaimRequests();
+}
+
+function clearAllData() {
+    localStorage.removeItem("reportedItems");
+    localStorage.removeItem("claimRequests");
+    localStorage.removeItem("claimImage");
+    localStorage.removeItem("claimTitle");
+    localStorage.removeItem("claimDesc");
+
+    alert("All data cleared.");
+    location.reload();
+}
+
+function logout() {
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("adminLoggedIn");
+    window.location.href = "admin-login.html";
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "x") {
+        e.preventDefault();
+        clearAllData();
+    }
+});
+
+window.addEventListener("DOMContentLoaded", function () {
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+});
+</script>
+</body>
+</html>
