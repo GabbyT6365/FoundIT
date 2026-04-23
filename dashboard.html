@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <title>FoundIT | Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="dashboard-page">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <!-- TOP BAR -->
   <header class="dashboard-top">
@@ -25,7 +27,7 @@
   <main class="dashboard-layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar flyout-sidebar" id="adminSidebar">
       <h2>Student</h2>
 
       <a href="dashboard.html" class="active">Home</a>
@@ -113,7 +115,23 @@ function filterStudentItems() {
         }
     });
 }
+function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
 
+window.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("adminSidebar");
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+    renderRealCalendar();
+
+    if (window.innerWidth > 1024 && sidebar) {
+        sidebar.classList.add("open");
+    }
+});
 function clearStudentSearch() {
     const searchInput = document.getElementById("studentSearchInput");
     if (!searchInput) return;
@@ -136,27 +154,29 @@ function renderReportedItemsOnStudentDashboard() {
     }
 
     items.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "student-item-card";
-        card.dataset.title = item.title;
-        card.dataset.desc = item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc;
+    const card = document.createElement("div");
+    const itemImage = item.image || item.media || "";
 
-        card.onclick = function () {
-            goToClaimPage(
-                item.media,
-                item.title,
-                item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc
-            );
-        };
+    card.className = "student-item-card";
+    card.dataset.title = item.title;
+    card.dataset.desc = item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc;
 
-        card.innerHTML = `
-            <img src="${item.media}" alt="${item.title}">
-            <h3 class="item-title">${item.title}</h3>
-            <p class="item-desc">${item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc}</p>
-        `;
+    card.onclick = function () {
+        goToClaimPage(
+            itemImage,
+            item.title,
+            item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc
+        );
+    };
 
-        grid.appendChild(card);
-    });
+    card.innerHTML = `
+        <img src="${itemImage}" alt="${item.title}">
+        <h3 class="item-title">${item.title}</h3>
+        <p class="item-desc">${item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc}</p>
+    `;
+
+    grid.appendChild(card);
+});
 }
 
 window.addEventListener("DOMContentLoaded", function () {

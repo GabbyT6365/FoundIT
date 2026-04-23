@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <title>FoundIT | Contact Us</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="contact-page">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <!-- HEADER -->
   <header class="contact-header">
@@ -21,7 +23,7 @@
   <main class="contact-layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar flyout-sidebar" id="adminSidebar">
       <h2 class="role">ADMIN</h2>
       <nav class="side-nav">
         <a href="index.html" class="nav-btn">Home</a>
@@ -37,7 +39,7 @@
 
       <div class="contact-grid">
         <div class="contact-card">
-          <img src="images/phonee.webp" alt="Phone Icon">
+          <img src="images/baybrant.png" alt="Phone Icon">
           <p>
             <strong>Mobile No:</strong><br>
             (+63) 9764952858
@@ -45,7 +47,7 @@
         </div>
 
         <div class="contact-card">
-          <img src="images/location.png" alt="Location Icon">
+          <img src="images/lokasyonbech.png" alt="Location Icon">
           <p>
             <strong>Address:</strong><br>
             YT Headquarters, 4101 C. Raymundo Ave, Pasig, Metro Manila
@@ -72,21 +74,37 @@
           <img src="images/salaming logo.png" alt="FoundIT Logo">
           <p>
             <strong>Website:</strong><br>
-            https://found-9upuoe7ju-gabbyt6365s-projects.vercel.app
+            found-it-y1c2.vercel.app
           </p>
         </div>
 
         <div class="contact-card">
-          <div class="contact-placeholder">T</div>
+          <img src="images/silenthacker.png" alt="Tiktok logo">
           <p>
             <strong>Tiktok Page:</strong><br>
-            WALA PA MUNA
+            https://www.tiktok.com/@youthtech.inst?_r=1&_t=ZS-95ZfHZqGlTo
           </p>
         </div>
       </div>
     </section>
 
   </main>
+<script>function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
 
+window.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("adminSidebar");
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+    renderRealCalendar();
+
+    if (window.innerWidth > 1024 && sidebar) {
+        sidebar.classList.add("open");
+    }
+});</script>
 </body>
 </html>

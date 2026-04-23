@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <title>FoundIT | Calendar</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="page">
 
   <header class="dashboard-header">
-    <div class="dashboard-header-inner">
-      <div class="header-left">
-        <img src="images/salaming logo.png" alt="FoundIT Logo" class="small-logo" />
-        <h1>FoundIT</h1>
-      </div>
-
+    <div class="header-left">
+      <img src="images/salaming logo.png" alt="FoundIT Logo" class="small-logo" />
+      <h1>FoundIT</h1>
+    </div>
   </header>
 
   <main class="calendar-page-layout">
@@ -22,72 +21,32 @@
     <aside class="sidebar">
       <h2 class="role">ADMIN</h2>
       <nav class="side-nav">
-        <a href="admin-dashboard.html" class="nav-btn active">Home</a>
-        <a href="#">About Us</a>
-        <a href="report.html">Report</a>
-        <a href="contact.html">Contact</a>
+        <a href="admin-dashboard.html" class="nav-btn">Home</a>
+        <a href="about.html" class="nav-btn">About Us</a>
+        <a href="report.html" class="nav-btn">Report</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
       </nav>
     </aside>
 
     <section class="calendar-main">
       <div class="calendar-month-bar">
-        <button class="month-arrow">&#8249;</button>
-        <h2>March</h2>
-        <button class="month-arrow">&#8250;</button>
+        <button class="month-arrow" type="button" onclick="changeCalendarPageMonth(-1)">&#8249;</button>
+        <h2 id="calendarPageMonthLabel">Month Year</h2>
+        <button class="month-arrow" type="button" onclick="changeCalendarPageMonth(1)">&#8250;</button>
       </div>
 
       <div class="calendar-board">
         <div class="calendar-weekdays">
           <div>Sun</div>
           <div>Mon</div>
-          <div>Tues</div>
+          <div>Tue</div>
           <div>Wed</div>
-          <div>Thurs</div>
+          <div>Thu</div>
           <div>Fri</div>
           <div>Sat</div>
         </div>
 
-        <div class="calendar-grid-large">
-          <div class="calendar-day">1</div>
-          <div class="calendar-day">2</div>
-          <div class="calendar-day event-green">3</div>
-          <div class="calendar-day event-green">4</div>
-          <div class="calendar-day">5</div>
-          <div class="calendar-day">6</div>
-          <div class="calendar-day">7</div>
-
-          <div class="calendar-day">8</div>
-          <div class="calendar-day">9</div>
-          <div class="calendar-day event-red">10</div>
-          <div class="calendar-day event-red">11</div>
-          <div class="calendar-day">12</div>
-          <div class="calendar-day double-red">13</div>
-          <div class="calendar-day">14</div>
-
-          <div class="calendar-day">15</div>
-          <div class="calendar-day">17</div>
-          <div class="calendar-day">18</div>
-          <div class="calendar-day">19</div>
-          <div class="calendar-day">20</div>
-          <div class="calendar-day">21</div>
-          <div class="calendar-day">22</div>
-
-          <div class="calendar-day">22</div>
-          <div class="calendar-day">23</div>
-          <div class="calendar-day">24</div>
-          <div class="calendar-day">25</div>
-          <div class="calendar-day">26</div>
-          <div class="calendar-day">27</div>
-          <div class="calendar-day">28</div>
-
-          <div class="calendar-day">29</div>
-          <div class="calendar-day">30</div>
-          <div class="calendar-day">31</div>
-          <div class="calendar-day muted">1</div>
-          <div class="calendar-day muted">2</div>
-          <div class="calendar-day muted">3</div>
-          <div class="calendar-day muted">4</div>
-        </div>
+        <div id="calendarPageGrid" class="calendar-grid-large"></div>
       </div>
     </section>
 
@@ -102,5 +61,78 @@
     </aside>
 
   </main>
+
+  <script>
+    let calendarPageDate = new Date();
+
+    function renderCalendarPage() {
+      const monthLabel = document.getElementById("calendarPageMonthLabel");
+      const calendarGrid = document.getElementById("calendarPageGrid");
+
+      if (!monthLabel || !calendarGrid) return;
+
+      const year = calendarPageDate.getFullYear();
+      const month = calendarPageDate.getMonth();
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const prevMonthDays = new Date(year, month, 0).getDate();
+
+      const today = new Date();
+      const todayYear = today.getFullYear();
+      const todayMonth = today.getMonth();
+      const todayDate = today.getDate();
+
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      monthLabel.textContent = `${monthNames[month]} ${year}`;
+      calendarGrid.innerHTML = "";
+
+      for (let i = firstDay - 1; i >= 0; i--) {
+        const prevCell = document.createElement("div");
+        prevCell.className = "calendar-day muted";
+        prevCell.textContent = prevMonthDays - i;
+        calendarGrid.appendChild(prevCell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement("div");
+        dayCell.className = "calendar-day";
+        dayCell.textContent = day;
+
+        if (
+          year === todayYear &&
+          month === todayMonth &&
+          day === todayDate
+        ) {
+          dayCell.classList.add("event-green");
+        }
+
+        calendarGrid.appendChild(dayCell);
+      }
+
+      const totalCells = calendarGrid.children.length;
+      const remainingCells = (7 - (totalCells % 7)) % 7;
+
+      for (let day = 1; day <= remainingCells; day++) {
+        const nextCell = document.createElement("div");
+        nextCell.className = "calendar-day muted";
+        nextCell.textContent = day;
+        calendarGrid.appendChild(nextCell);
+      }
+    }
+
+    function changeCalendarPageMonth(direction) {
+      calendarPageDate.setMonth(calendarPageDate.getMonth() + direction);
+      renderCalendarPage();
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      renderCalendarPage();
+    });
+  </script>
 </body>
 </html>

@@ -4,10 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <title>FoundIT | Admin Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="page fade-in">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <!-- HEADER -->
   <header class="dashboard-header">
@@ -23,7 +25,7 @@
 
   <!-- MAIN DASHBOARD LAYOUT -->
   <main class="admin-dashboard-layout">
-    <aside class="sidebar">
+    <aside class="sidebar flyout-sidebar" id="adminSidebar">
       <h2 class="role">ADMIN</h2>
       <nav class="side-nav">
         <a href="admin-dashboard.html" class="nav-btn active">Home</a>
@@ -56,22 +58,26 @@
       </div>
 
       <div class="calendar-card">
-        <div class="calendar-header">
-          <button>&lt;</button>
-          <span>Month today</span>
-          <button>&gt;</button>
-        </div>
+  <div class="calendar-header">
+    <button type="button" onclick="changeMonth(-1)">&lt;</button>
+    <span id="calendarMonthLabel">Month Year</span>
+    <button type="button" onclick="changeMonth(1)">&gt;</button>
+  </div>
 
-        <div class="calendar-grid">
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <div></div><div></div><div class="green"></div><div class="green"></div><div></div><div></div><div></div>
-          <div></div><div></div><div class="red"></div><div class="red"></div><div></div><div class="red"></div><div></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        </div>
+  <div class="calendar-weekdays-row">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
 
-        <a href="calendar.html" class="calendar-link">View calendar</a>
-      </div>
+  <div id="calendarGrid" class="calendar-grid-real"></div>
+
+  <a href="calendar.html" class="calendar-link">View calendar</a>
+</div>
 
       <div class="schedule-card">
         <h3>Schedule</h3>
@@ -101,11 +107,17 @@ function renderReportedItemsOnAdminDashboard() {
 
     items.forEach(item => {
         const report = document.createElement("div");
-        report.className = "report-item";
+        const itemImage = item.image || item.media || "";
+
+        report.className = "claim-request-item";
 
         report.innerHTML = `
-            <strong>${item.title}</strong> - ${item.location}<br>
-            ${item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc}
+            <img src="${itemImage}" alt="${item.title}" class="admin-item-thumb">
+            <div class="claim-request-info">
+                <strong>${item.title}</strong><br>
+                Location: ${item.location}<br>
+                ${item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc}
+            </div>
         `;
 
         adminList.appendChild(report);
@@ -123,12 +135,31 @@ function renderClaimRequests() {
         claimList.innerHTML = `<p style="color:black;">No pending claim requests.</p>`;
         return;
     }
+function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
 
+window.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("adminSidebar");
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+    renderRealCalendar();
+
+    if (window.innerWidth > 1024 && sidebar) {
+        sidebar.classList.add("open");
+    }
+});
     claimRequests.forEach(request => {
         const requestCard = document.createElement("div");
+        const requestImage = request.itemImage || request.image || request.media || "";
+
         requestCard.className = "claim-request-item";
 
         requestCard.innerHTML = `
+            <img src="${requestImage}" alt="${request.itemTitle}" class="admin-item-thumb">
             <div class="claim-request-info">
                 <strong>${request.itemTitle}</strong><br>
                 Claimant: ${request.claimantName}<br>
@@ -172,6 +203,9 @@ function approveClaim(requestId) {
 
     renderReportedItemsOnAdminDashboard();
     renderClaimRequests();
+
+    // 🔥 ADD THIS LINE HERE
+    alert("Claim approved successfully.");
 }
 
 function rejectClaim(requestId) {
@@ -181,6 +215,9 @@ function rejectClaim(requestId) {
     localStorage.setItem("claimRequests", JSON.stringify(remainingRequests));
 
     renderClaimRequests();
+
+    // 🔥 ADD THIS LINE HERE
+    alert("Claim rejected.");
 }
 
 function clearAllData() {
@@ -200,6 +237,61 @@ function logout() {
     window.location.href = "admin-login.html";
 }
 
+let currentCalendarDate = new Date();
+
+function renderRealCalendar() {
+    const calendarGrid = document.getElementById("calendarGrid");
+    const calendarMonthLabel = document.getElementById("calendarMonthLabel");
+
+    if (!calendarGrid || !calendarMonthLabel) return;
+
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const today = new Date();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth();
+    const todayDate = today.getDate();
+
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    calendarMonthLabel.textContent = `${monthNames[month]} ${year}`;
+    calendarGrid.innerHTML = "";
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "calendar-day-cell empty";
+        calendarGrid.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement("div");
+        dayCell.className = "calendar-day-cell selected-month";
+        dayCell.textContent = day;
+
+        if (
+            year === todayYear &&
+            month === todayMonth &&
+            day === todayDate
+        ) {
+            dayCell.classList.add("today");
+        }
+
+        calendarGrid.appendChild(dayCell);
+    }
+}
+
+function changeMonth(direction) {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+    renderRealCalendar();
+}
+
 document.addEventListener("keydown", function(e) {
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "x") {
         e.preventDefault();
@@ -210,6 +302,7 @@ document.addEventListener("keydown", function(e) {
 window.addEventListener("DOMContentLoaded", function () {
     renderReportedItemsOnAdminDashboard();
     renderClaimRequests();
+    renderRealCalendar();
 });
 </script>
 </body>

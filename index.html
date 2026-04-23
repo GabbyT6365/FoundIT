@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <a href="login.html"></a>
-     <title>FoundIT | Lost & Found</title>
-     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>FoundIT | Lost & Found</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body class="page fade-in">
 
@@ -27,22 +28,40 @@
         <img src="images/foundit_logo.png.jpg" alt="FoundIT logo">
     </div>
 
-    <div class="hero-right">
-        <h1>About FoundIT</h1>
+    <div class="home-description">
+        <h2>About FoundIT</h2>
 
-        <p>
-            FoundIT is a digital lost and found application designed for STI Ortigas-Cainta students. 
-            It helps users easily report, find, and claim lost items through an organized and secure 
-            online platform, saving time and reducing stress caused by missing items.
-        </p>
+        <div class="slide-container">
+            <div class="desc-slide active">
+                FoundIT is a digital lost and found platform that helps students easily report, find, and claim lost items through an organized and secure online system.
+            </div>
+
+            <div class="desc-slide">
+                It simplifies the process of reconnecting lost belongings with their rightful owners, saving time, reducing stress, and improving overall campus organization.
+            </div>
+        </div>
 
         <div class="dots">
-            <span></span>
-            <span></span>
+            <span class="dot active" onclick="showSlide(0)"></span>
+            <span class="dot" onclick="showSlide(1)"></span>
         </div>
     </div>
-
 </section>
+
+<script>
+function showSlide(index) {
+    const slides = document.querySelectorAll(".desc-slide");
+    const dots = document.querySelectorAll(".dot");
+
+    slides.forEach((slide, i) => {
+        slide.classList.remove("active");
+        dots[i].classList.remove("active");
+    });
+
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+}
+</script>
 
 </body>
 </html>
