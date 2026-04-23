@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>FoundIT | Lost & Found</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body class="page fade-in">
+
+<header class="navbar">
+    <div class="logo">
+        <img src="images/salaming logo.png" alt="FoundIT logo">
+        <h1>FoundIT</h1>
+    </div>
+
+    <nav class="nav-links">
+        <a href="about.html">About us</a>
+        <a href="index.html" class="active">Home</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-left">
+        <img src="images/foundit_logo.png.jpg" alt="FoundIT logo">
+    </div>
+
+    <div class="home-description">
+        <h2>About FoundIT</h2>
+
+        <div class="slide-container">
+            <div class="desc-slide active">
+                FoundIT is a digital lost and found platform that helps students easily report, find, and claim lost items through an organized and secure online system.
+            </div>
+
+            <div class="desc-slide">
+                It simplifies the process of reconnecting lost belongings with their rightful owners, saving time, reducing stress, and improving overall campus organization.
+            </div>
+        </div>
+
+        <div class="dots">
+            <span class="dot active" onclick="showSlide(0)"></span>
+            <span class="dot" onclick="showSlide(1)"></span>
+        </div>
+    </div>
+</section>
+
+<script>
+function showSlide(index) {
+    const slides = document.querySelectorAll(".desc-slide");
+    const dots = document.querySelectorAll(".dot");
+
+    slides.forEach((slide, i) => {
+        slide.classList.remove("active");
+        dots[i].classList.remove("active");
+    });
+
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+}
+</script>
+
+</body>
+</html>
