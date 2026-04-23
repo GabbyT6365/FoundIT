@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <title>FoundIT | About Us</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="about-page">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <!-- HEADER -->
   <header class="about-header">
@@ -21,7 +23,7 @@
   <main class="about-layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar flyout-sidebar" id="adminSidebar">
       <h2 class="role">ADMIN</h2>
       <nav class="side-nav">
         <a href="index.html" class="nav-btn">Home</a>
@@ -63,6 +65,11 @@
           </div>
 
           <div class="member">
+            <img src="images/ES.png" alt="Jheremie Nash Espiritu Santo" />
+            <P><strong>Jheremie Nash Espiritu Santo</strong><br>Head of Marketing</P>
+          </div>
+
+          <div class="member">
             <img src="images/kumag.png" alt="John Gabriel Tribiana" />
             <p><strong>John Gabriel Tribiana</strong><br>Head of IT</p>
           </div>
@@ -81,6 +88,15 @@
             <img src="images/ganaban.png" alt="Ryben Lincoln Ganaban" />
             <p><strong>Ryben Lincoln Ganaban</strong><br>Programmer</p>
           </div>
+          <div class="member">
+            <img src="images/jacinto.png" alt="Izeia Jacinto" />
+            <p><strong>Izeia Jacinto</strong><br>Campus Ambassador</p>
+          </div>
+
+          <div class="member">
+            <img src="images/berso.png" alt="Christian Carlo Berso" />
+            <p><strong>Christian Carlo Berso</strong><br>Programmer</p>
+          </div>
         </div>
       </div>
 
@@ -90,13 +106,8 @@
 
         <div class="team-grid">
           <div class="member">
-            <img src="images/jacinto.png" alt="Izeia Jacinto" />
-            <p><strong>Izeia Jacinto</strong><br>Campus Ambassador</p>
-          </div>
-
-          <div class="member">
-            <img src="images/berso.png" alt="Christian Carlo Berso" />
-            <p><strong>Christian Carlo Berso</strong><br>Programmer</p>
+            <img src="images/ribaya.png" alt="Kiel Ribaya" />
+            <p><strong>Kiel Ribaya</strong><br>Utility</p>
           </div>
 
           <div class="member">
@@ -108,6 +119,22 @@
     </section>
 
   </main>
+<script>function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
 
+window.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("adminSidebar");
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+    renderRealCalendar();
+
+    if (window.innerWidth > 1024 && sidebar) {
+        sidebar.classList.add("open");
+    }
+});</script>
 </body>
 </html>
