@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>FoundIT | Lost & Found</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body class="page fade-in">
+<div id="termsModal" class="terms-modal">
+  <div class="terms-box">
+    <h2>Terms and Conditions</h2>
+
+    <p>
+      By using FoundIT, you agree to use the website only for reporting,
+      searching, and claiming lost and found items properly.
+    </p>
+
+    <p>
+      Users must provide accurate information when submitting reports or claims.
+      False information, misuse, or unauthorized claims are not allowed.
+    </p>
+
+    <p>
+      If false claim occured, it is automatically included as a major offense and exchanged for punishment.
+    </p>
+
+    <button onclick="acceptTerms()">I Agree</button>
+    <button class="disagree-btn" onclick="declineTerms()">I Disagree</button>
+  </div>
+</div>
+<header class="navbar">
+    <a href="index.html" class="logo home-logo-link">
+        <img src="images/salaming logo.png" alt="FoundIT logo">
+        <h1>FoundIT</h1>
+    </a>
+
+    <nav class="nav-links">
+        <a href="report.html">Report</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
+
+<main class="home-page-content">
+
+    <!-- TOP BIO SECTION -->
+    <section class="home-bio-section">
+        <div class="home-about-description home-info-wide">
+            <h2><span>About FoundIT</span></h2>
+            <div class="slide-container">
+                <div class="desc-slide active">
+                <p>
+                    <strong><strong>FoundIT</strong> is a digital lost and found platform designed for students. 
+        It provides a centralized system where users can easily report, search, and claim lost items in a structured and organized way. The system allows students to submit detailed reports including item descriptions, locations, and images, 
+        making it easier to identify and match lost belongings. This reduces the reliance on manual inquiries 
+        and scattered communication across the campus.</p>
+                </div>
+
+                <div class="desc-slide">
+                    <p>On the administrative side, FoundIT enables authorized personnel to review reports and manage claim requests. 
+        Admins can verify ownership, approve or reject claims, and maintain the accuracy and integrity of the system. Overall, FoundIT improves efficiency, minimizes lost item incidents, and promotes a more organized 
+        and responsive campus environment through the use of a simple and accessible web-based solution.</p>
+                </div>
+            </div>
+
+            <div class="dots">
+                <span class="dot active" onclick="showSlide(0)"></span>
+                <span class="dot" onclick="showSlide(1)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CREW SECTION -->
+    <section class="home-team-section">
+        <h2 class="meet-title">Meet Us</h2>
+
+        <div class="team-section">
+            <h3 class="team-subtitle">Core Team</h3>
+
+            <div class="team-grid">
+                <div class="member">
+                    <img src="images/lider.png" alt="Hazel Irish Mae L. Arma" />
+                    <p><strong>Hazel Irish Mae L. Arma</strong><br>Chief Executive Officer</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/sequira.png" alt="Franz Carl Sequiera" />
+                    <p><strong>Franz Carl Sequiera</strong><br>Head of Finance</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/ES.png" alt="Jheremie Nash Espiritu Santo" />
+                    <p><strong>Jheremie Nash Espiritu Santo</strong><br>Head of Marketing</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/kumag.png" alt="John Gabriel Tribiana" />
+                    <p><strong>John Gabriel Tribiana</strong><br>Head of IT</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/big_d.png" alt="Reynian Carlos Dellomas" />
+                    <p><strong>Reynian Carlos Dellomas</strong><br>Campus Ambassador</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/gomez.png" alt="Marc Reagan Gomez" />
+                    <p><strong>Marc Reagan Gomez</strong><br>Finance Assistant</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/ganaban.png" alt="Ryben Lincoln Ganaban" />
+                    <p><strong>Ryben Lincoln Ganaban</strong><br>Programmer</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/jacinto.png" alt="Izeia Jacinto" />
+                    <p><strong>Izeia Jacinto</strong><br>Campus Ambassador</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/berso.png" alt="Christian Carlo Berso" />
+                    <p><strong>Christian Carlo Berso</strong><br>Programmer</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <h3 class="team-subtitle">Additional Members</h3>
+
+            <div class="team-grid additional-grid">
+                <div class="member">
+                    <img src="images/ribaya.png" alt="Kiel Ribaya" />
+                    <p><strong>Kiel Ribaya</strong><br>Utility</p>
+                </div>
+
+                <div class="member">
+                    <img src="images/grefiel.png" alt="Joshua J. Grefiel" />
+                    <p><strong>Joshua J. Grefiel</strong><br>Front Desk Receptionist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+<script>
+function showSlide(index) {
+    const slides = document.querySelectorAll(".desc-slide");
+    const dots = document.querySelectorAll(".dot");
+
+    slides.forEach((slide, i) => {
+        slide.classList.remove("active");
+        dots[i].classList.remove("active");
+    });
+
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+}
+window.addEventListener("DOMContentLoaded", function () {
+    const termsModal = document.getElementById("termsModal");
+
+    if (sessionStorage.getItem("acceptedTerms") === "yes") {
+        termsModal.style.display = "none";
+        document.body.classList.remove("modal-open");
+    } else {
+        termsModal.style.display = "flex";
+        document.body.classList.add("modal-open");
+    }
+});
+
+function acceptTerms() {
+    sessionStorage.setItem("acceptedTerms", "yes");
+    document.getElementById("termsModal").style.display = "none";
+    document.body.classList.remove("modal-open");
+}
+
+function declineTerms() {
+    if (document.referrer) {
+        window.history.back();
+    } else {
+        window.location.href = "about:blank";
+    }
+}
+</script>
+
+</body>
+</html>

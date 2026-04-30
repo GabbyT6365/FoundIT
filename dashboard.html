@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>FoundIT | Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dashboard-page">
+
+  <!-- TOP BAR -->
+  <header class="dashboard-top">
+    <div class="logo logo-toggle" onclick="toggleSidebar()">
+    <img src="images/salaming logo.png" alt="FoundIT Logo">
+</div>
+
+    <h1 class="top-title">FoundIT</h1>
+
+    <div class="top-icons">
+      <img src="images/notif.png" alt="Notifications">
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar flyout-sidebar" id="studentSidebar">
+      <h2>Student</h2>
+      <nav class="side-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="report.html" onclick="localStorage.setItem('reportReturnPage', 'dashboard.html')">Report</a>
+      <a href="contact.html">Contact</a>
+      </nav>
+    </aside>
+
+    <!-- CENTER -->
+    <section class="dashboard-center">
+
+  <div class="student-search-bar">
+  <span class="search-left">🔍</span>
+  <input type="text" id="studentSearchInput" placeholder="Search items">
+  <span class="search-right" onclick="clearStudentSearch()">×</span>
+</div>
+
+  <h2 class="section-title">Lost Items</h2>
+<div class="student-item-grid" id="lostItemGrid"></div>
+
+<h2 class="section-title">Found Items</h2>
+<div class="student-item-grid" id="foundItemGrid"></div>
+
+</section>
+
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+  <div class="datetime-card">
+    <h2>Date &amp; time</h2>
+  </div>
+
+  <div class="calendar-card">
+    <div class="calendar-header">
+      <button type="button" onclick="changeMonth(-1)">&lt;</button>
+      <span id="calendarMonthLabel">Month Year</span>
+      <button type="button" onclick="changeMonth(1)">&gt;</button>
+    </div>
+
+    <div class="calendar-weekdays-row">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+    </div>
+
+    <div id="calendarGrid" class="calendar-grid-real"></div>
+
+    <a href="calendar.html" class="calendar-link">View calendar</a>
+  </div>
+
+  <div class="schedule-card">
+    <h3>Schedule</h3>
+    <div id="studentScheduleList"></div>
+  </div>
+</aside>
+
+  </main>
+  <div id="claimToast" class="claim-toast">
+  Your claim has been submitted, please wait for approval.
+</div>
+
+  <script>
+function goToClaimPage(imagePath, title = "", desc = "") {
+    localStorage.setItem("claimImage", imagePath);
+    localStorage.setItem("claimTitle", title);
+    localStorage.setItem("claimDesc", desc);
+    window.location.href = "claim.html";
+}
+
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function highlightMatch(text, query) {
+    if (!query) return text;
+
+    const escapedQuery = escapeRegExp(query);
+    const regex = new RegExp(`(${escapedQuery})`, "gi");
+
+    return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+}
+
+function filterStudentItems() {
+    const searchInput = document.getElementById("studentSearchInput");
+    if (!searchInput) return;
+
+    const query = searchInput.value.trim().toLowerCase();
+    const cards = document.querySelectorAll(".student-item-card");
+
+    cards.forEach(card => {
+        const title = card.dataset.title || "";
+        const desc = card.dataset.desc || "";
+
+        const titleEl = card.querySelector(".item-title");
+        const descEl = card.querySelector(".item-desc");
+
+        const titleLower = title.toLowerCase();
+        const descLower = desc.toLowerCase();
+
+        const isMatch =
+            query === "" ||
+            titleLower.includes(query) ||
+            descLower.includes(query);
+
+        if (isMatch) {
+            card.style.display = "block";
+            if (titleEl) titleEl.innerHTML = highlightMatch(title, query);
+            if (descEl) descEl.innerHTML = highlightMatch(desc, query);
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("studentSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
+
+function clearStudentSearch() {
+    const searchInput = document.getElementById("studentSearchInput");
+    if (!searchInput) return;
+
+    searchInput.value = "";
+    filterStudentItems();
+}
+
+function renderReportedItemsOnStudentDashboard() {
+    const lostGrid = document.getElementById("lostItemGrid");
+    const foundGrid = document.getElementById("foundItemGrid");
+
+    if (!lostGrid || !foundGrid) return;
+
+    const items = JSON.parse(localStorage.getItem("reportedItems")) || [];
+    const postedItems = items.filter(item => item.status === "posted");
+
+    const lostItems = postedItems.filter(item => item.reportType === "lost");
+    const foundItems = postedItems.filter(item => item.reportType === "found");
+
+    renderStudentCards(lostGrid, lostItems, "No lost items posted yet.");
+    renderStudentCards(foundGrid, foundItems, "No found items posted yet.");
+}
+
+function renderStudentCards(grid, items, emptyMessage) {
+    grid.innerHTML = "";
+
+    if (items.length === 0) {
+        grid.innerHTML = `<p style="color:black;">${emptyMessage}</p>`;
+        return;
+    }
+
+    items.forEach(item => {
+        const card = document.createElement("div");
+        const itemImage = item.image || item.media || "";
+
+        card.className = "student-item-card";
+        card.dataset.title = item.title;
+        card.dataset.desc = item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc;
+
+        card.onclick = function () {
+            goToClaimPage(
+                itemImage,
+                item.title,
+                item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc
+            );
+        };
+
+        card.innerHTML = `
+            <img src="${itemImage}" alt="${item.title}">
+            <h3 class="item-title">${item.title}</h3>
+            <p class="item-desc">${item.claimedBy ? `Claimed by: ${item.claimedBy}` : item.desc}</p>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+let currentCalendarDate = new Date();
+
+function renderRealCalendar() {
+    const calendarGrid = document.getElementById("calendarGrid");
+    const calendarMonthLabel = document.getElementById("calendarMonthLabel");
+
+    if (!calendarGrid || !calendarMonthLabel) return;
+
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    calendarMonthLabel.textContent = `${monthNames[month]} ${year}`;
+    calendarGrid.innerHTML = "";
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "calendar-day-cell empty";
+        calendarGrid.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement("div");
+        dayCell.className = "calendar-day-cell selected-month";
+        dayCell.textContent = day;
+
+        if (
+            year === today.getFullYear() &&
+            month === today.getMonth() &&
+            day === today.getDate()
+        ) {
+            dayCell.classList.add("today");
+        }
+
+        calendarGrid.appendChild(dayCell);
+    }
+}
+
+function changeMonth(direction) {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+    renderRealCalendar();
+}
+
+function renderStudentSchedule() {
+    const scheduleList = document.getElementById("studentScheduleList");
+    if (!scheduleList) return;
+
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+
+    if (claimRequests.length === 0) {
+        scheduleList.innerHTML = `<p style="color:black;">No scheduled claims yet.</p>`;
+        return;
+    }
+
+    scheduleList.innerHTML = "";
+
+    claimRequests.forEach(request => {
+        const label = document.createElement("label");
+        label.innerHTML = `
+            <input type="radio">
+            Claim of "${request.itemTitle}" pending approval
+        `;
+        scheduleList.appendChild(label);
+    });
+}
+window.addEventListener("DOMContentLoaded", function () {
+    renderReportedItemsOnStudentDashboard();
+    renderRealCalendar();
+    renderStudentSchedule();
+
+    const searchInput = document.getElementById("studentSearchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", filterStudentItems);
+    }
+});
+</script>
+</body>
+</html>

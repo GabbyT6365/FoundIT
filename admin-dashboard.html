@@ -1,0 +1,316 @@
+<!-- /foundit/admin-dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>FoundIT | Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page fade-in">
+
+  <!-- HEADER -->
+  <header class="dashboard-header">
+    <div class="header-left logo-toggle" onclick="toggleSidebar()">
+  <img src="images/salaming logo.png" alt="FoundIT Logo" class="small-logo" />
+  <h1>Lost & Found Items</h1>
+</div>
+    
+  </header>
+
+  <!-- MAIN DASHBOARD LAYOUT -->
+  <main class="admin-dashboard-layout">
+    <aside class="sidebar flyout-sidebar" id="adminSidebar">
+      <h2 class="role">ADMIN</h2>
+      <nav class="side-nav">
+        <a href="admin-dashboard.html" class="nav-btn active">Home</a>
+        <a href="about.html" class="nav-btn">About Us</a>
+        <a href="report.html" class="nav-btn" onclick="localStorage.setItem('reportReturnPage', 'admin-dashboard.html')">Report</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+
+      <button class="reset-btn" onclick="clearAllData()">Reset System</button>
+      <button class="reset-btn" onclick="logout()" style="margin-top:10px; background:#444;">Logout</button>
+    </aside>
+
+    <section class="admin-center">
+      <h2 class="section-title">USER REPORTS</h2>
+
+      <div class="reports-card">
+        <div id="adminReportsList"></div>
+      </div>
+      
+      <h2 class="section-title">CLAIM REQUESTS</h2>
+
+        <div class="reports-card">
+      <div id="adminClaimRequestsList"></div>
+      </div>
+    </section>
+
+    <aside class="right-panel">
+      <div class="datetime-card">
+        <h2>Date &amp; time</h2>
+      </div>
+
+      <div class="calendar-card">
+  <div class="calendar-header">
+    <button type="button" onclick="changeMonth(-1)">&lt;</button>
+    <span id="calendarMonthLabel">Month Year</span>
+    <button type="button" onclick="changeMonth(1)">&gt;</button>
+  </div>
+
+  <div class="calendar-weekdays-row">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
+
+  <div id="calendarGrid" class="calendar-grid-real"></div>
+
+  <a href="calendar.html" class="calendar-link">View calendar</a>
+</div>
+
+      <div class="schedule-card">
+        <h3>Schedule</h3>
+        <label><input type="radio"> Claim of "Blue notebook" tomorrow</label>
+        <label><input type="radio"> Claim of "Leather Wallet" by March 12, 2026</label>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+if (localStorage.getItem("userRole") !== "admin") {
+    alert("Access denied.");
+    window.location.href = "admin-login.html";
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
+
+function renderReportedItemsOnAdminDashboard() {
+    const adminList = document.getElementById("adminReportsList");
+    if (!adminList) return;
+
+    const allItems = JSON.parse(localStorage.getItem("reportedItems")) || [];
+const items = allItems.filter(item => item.status === "pending");
+
+adminList.innerHTML = "";
+
+    if (items.length === 0) {
+        adminList.innerHTML = `<p style="color:black;">No reports yet.</p>`;
+        return;
+    }
+    
+
+    items.forEach(item => {
+        const report = document.createElement("div");
+        const itemImage = item.image || item.media || "";
+
+        report.className = "claim-request-item";
+        report.innerHTML = `
+    <img src="${itemImage}" alt="${item.title}" class="admin-item-thumb">
+
+    <div class="claim-request-info">
+        <strong>${item.title}</strong><br>
+        Type: ${item.reportType}<br>
+        Location: ${item.location}<br>
+        ${item.desc}
+    </div>
+
+    <div class="claim-request-actions">
+        <button onclick="approvePost(${item.id})">Post to Students</button>
+    </div>
+`;
+
+        adminList.appendChild(report);
+    });
+}
+function approvePost(itemId) {
+    const items = JSON.parse(localStorage.getItem("reportedItems")) || [];
+
+    const updatedItems = items.map(item => {
+        if (item.id === itemId) {
+            return {
+                ...item,
+                status: "posted"
+            };
+        }
+        return item;
+    });
+
+    localStorage.setItem("reportedItems", JSON.stringify(updatedItems));
+
+    renderReportedItemsOnAdminDashboard();
+
+    alert("Item posted to student dashboard.");
+}
+
+function renderClaimRequests() {
+    const claimList = document.getElementById("adminClaimRequestsList");
+    if (!claimList) return;
+
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+    claimList.innerHTML = "";
+
+    if (claimRequests.length === 0) {
+        claimList.innerHTML = `<p style="color:black;">No pending claim requests.</p>`;
+        return;
+    }
+
+    claimRequests.forEach(request => {
+        const requestCard = document.createElement("div");
+        const requestImage = request.itemImage || request.image || request.media || "";
+
+        requestCard.className = "claim-request-item";
+        requestCard.innerHTML = `
+            <img src="${requestImage}" alt="${request.itemTitle}" class="admin-item-thumb">
+            <div class="claim-request-info">
+                <strong>${request.itemTitle}</strong><br>
+                Claimant: ${request.claimantName}<br>
+                Section: ${request.claimantSection}<br>
+                Email: ${request.claimantEmail}<br>
+                Student ID: ${request.claimantStudentId}
+            </div>
+
+            <div class="claim-request-actions">
+                <button onclick="approveClaim(${request.id})">Approve</button>
+                <button onclick="rejectClaim(${request.id})">Reject</button>
+            </div>
+        `;
+
+        claimList.appendChild(requestCard);
+    });
+}
+
+function approveClaim(requestId) {
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+    const reportedItems = JSON.parse(localStorage.getItem("reportedItems")) || [];
+
+    const request = claimRequests.find(r => r.id === requestId);
+    if (!request) return;
+
+    const updatedItems = reportedItems.map(item => {
+        if (item.title === request.itemTitle) {
+            return {
+                ...item,
+                claimedBy: request.claimantName,
+                status: "claimed"
+            };
+        }
+        return item;
+    });
+
+    const remainingRequests = claimRequests.filter(r => r.id !== requestId);
+
+    localStorage.setItem("reportedItems", JSON.stringify(updatedItems));
+    localStorage.setItem("claimRequests", JSON.stringify(remainingRequests));
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+
+    alert("Claim approved successfully.");
+}
+
+function rejectClaim(requestId) {
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+    const remainingRequests = claimRequests.filter(r => r.id !== requestId);
+
+    localStorage.setItem("claimRequests", JSON.stringify(remainingRequests));
+
+    renderClaimRequests();
+
+    alert("Claim rejected.");
+}
+
+function clearAllData() {
+    localStorage.removeItem("reportedItems");
+    localStorage.removeItem("claimRequests");
+    localStorage.removeItem("claimImage");
+    localStorage.removeItem("claimTitle");
+    localStorage.removeItem("claimDesc");
+
+    alert("All data cleared.");
+    location.reload();
+}
+
+function logout() {
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("adminLoggedIn");
+    window.location.href = "admin-login.html";
+}
+
+let currentCalendarDate = new Date();
+
+function renderRealCalendar() {
+    const calendarGrid = document.getElementById("calendarGrid");
+    const calendarMonthLabel = document.getElementById("calendarMonthLabel");
+
+    if (!calendarGrid || !calendarMonthLabel) return;
+
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const today = new Date();
+
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    calendarMonthLabel.textContent = `${monthNames[month]} ${year}`;
+    calendarGrid.innerHTML = "";
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "calendar-day-cell empty";
+        calendarGrid.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement("div");
+        dayCell.className = "calendar-day-cell selected-month";
+        dayCell.textContent = day;
+
+        if (
+            year === today.getFullYear() &&
+            month === today.getMonth() &&
+            day === today.getDate()
+        ) {
+            dayCell.classList.add("today");
+        }
+
+        calendarGrid.appendChild(dayCell);
+    }
+}
+
+function changeMonth(direction) {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+    renderRealCalendar();
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "x") {
+        e.preventDefault();
+        clearAllData();
+    }
+});
+
+window.addEventListener("DOMContentLoaded", function () {
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+    renderRealCalendar();
+});
+</script>
+</body>
+</html>

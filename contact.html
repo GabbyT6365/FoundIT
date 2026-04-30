@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>FoundIT | Contact Us</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="contact-page">
+
+  <!-- HEADER -->
+  <header class="contact-header">
+    <div class="logo logo-toggle" onclick="toggleSidebar()">
+    <img src="images/salaming logo.png">
+    <h1>FoundIT</h1>
+</div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main class="contact-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar flyout-sidebar" id="adminSidebar">
+      <h2 class="role">ADMIN</h2>
+      <nav class="side-nav">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="about.html" class="nav-btn">About Us</a>
+        <a href="report.html" class="nav-btn">Report</a>
+        <a href="contact.html" class="nav-btn active">Contact</a>
+      </nav>
+    </aside>
+
+    <!-- CONTACT CONTENT -->
+    <section class="contact-container">
+      <h2 class="contact-title">Contact Us</h2>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <img src="images/baybrant.png" alt="Phone Icon">
+          <p>
+            <strong>Mobile No:</strong><br>
+            (+63) 9764952858
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <img src="images/lokasyonbech.png" alt="Location Icon">
+          <p>
+            <strong>Address:</strong><br>
+            YT Headquarters, 4101 C. Raymundo Ave, Pasig, Metro Manila
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <img src="images/gmail.webp" alt="Email Icon">
+          <p>
+            <strong>Email Address:</strong><br>
+            youthtechinstgmail.com
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <img src="images/pestebuk.webp" alt="Facebook Icon">
+          <p>
+            <strong>Facebook Page:</strong><br>
+            Account: YouthTech Institute
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <img src="images/salaming logo.png" alt="FoundIT Logo">
+          <p><strong>Website:</strong><br>
+            <a href="https://found-it-ylc2.vercel.app" target="_blank">
+            found-it-ylc2.vercel.app
+          </a>
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <img src="images/silenthacker.png" alt="Tiktok logo">
+          <p><strong>Tiktok Page:</strong><br>
+            <a href="https://www.tiktok.com/@youthtech.inst?_r=1&_t=ZS-95ZfHZqGlTo" target="_blank">
+              https://www.tiktok.com/@youthtech.inst?_r=1&_t=ZS-95ZfHZqGlTo
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById("adminSidebar");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open");
+}
+
+window.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("adminSidebar");
+
+    renderReportedItemsOnAdminDashboard();
+    renderClaimRequests();
+    renderRealCalendar();
+
+    if (window.innerWidth > 1024 && sidebar) {
+        sidebar.classList.add("open");
+    }
+});</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Claim Item | FoundIT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="claim-page">
+
+  <header class="claim-topbar">
+    <a href="index.html" class="logo home-logo-link">
+    <img src="images/salaming logo.png" alt="FoundIT logo">
+    <h1>FoundIT</h1>
+</a>
+    </div>
+    
+  </header>
+
+  <main class="claim-container">
+    <section class="claim-card">
+
+      <button class="claim-close-top" onclick="goBack()">✕</button>
+
+      <div class="claim-left">
+        <img id="claimImagePreview" class="claim-photo" src="" alt="Selected item">
+      </div>
+
+      <div class="claim-right">
+        <h2 class="claim-title">Claim This Item</h2>
+        <h3 id="claimItemTitle" class="claim-item-name"></h3>
+        <p id="claimItemDesc" class="claim-item-desc"></p>
+
+        <label for="claim-name">Enter Name</label>
+        <input id="claim-name" type="text" class="claim-input" placeholder="Enter your name">
+
+        <label for="claim-section">Enter Strand & Section</label>
+        <input id="claim-section" type="text" class="claim-input" placeholder="e.g. ICT 12-3">
+
+        <label for="claim-email">STI Email</label>
+        <input id="claim-email" type="email" class="claim-input" placeholder="example@stihub.com">
+
+        <label>Schedule Claiming</label>
+        <div class="schedule-row">
+          <select class="claim-input">
+            <option>Month</option>
+            <option>Jan</option>
+            <option>Feb</option>
+            <option>Mar</option>
+            <option>Apr</option>
+            <option>May</option>
+            <option>Jun</option>
+            <option>Jul</option>
+            <option>Aug</option>
+            <option>Sep</option>
+            <option>Oct</option>
+            <option>Nov</option>
+            <option>Dec</option>
+          </select>
+
+          <select class="claim-input">
+            <option>Day</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+            <option>31</option>
+          </select>
+
+          <input type="time" class="claim-input">
+        </div>
+
+        <label for="claim-id">Enter Student ID</label>
+        <input id="claim-id" type="text" class="claim-input" placeholder="02000123456">
+
+        <button class="claim-btn" onclick="submitClaim()">Claim</button>
+      </div>
+
+    </section>
+  </main>
+  <div id="claimToast" class="claim-toast">
+  Your claim has been submitted, please wait for approval.
+</div>
+
+  <script>
+function goBack() {
+    window.location.href = "dashboard.html";
+}
+
+window.onload = function () {
+    const img = localStorage.getItem("claimImage");
+    const title = localStorage.getItem("claimTitle");
+    const desc = localStorage.getItem("claimDesc");
+
+    const preview = document.getElementById("claimImagePreview");
+    const titleEl = document.getElementById("claimItemTitle");
+    const descEl = document.getElementById("claimItemDesc");
+
+    if (img && preview) preview.src = img;
+    if (titleEl) titleEl.textContent = title || "";
+    if (descEl) descEl.textContent = desc || "";
+};
+
+function submitClaim() {
+    const claimName = document.getElementById("claim-name")?.value.trim();
+    const claimSection = document.getElementById("claim-section")?.value.trim();
+    const claimEmail = document.getElementById("claim-email")?.value.trim();
+    const claimStudentId = document.getElementById("claim-id")?.value.trim();
+    const claimTitle = localStorage.getItem("claimTitle");
+    const claimImage = localStorage.getItem("claimImage");
+
+    if (!claimName || !claimSection || !claimEmail || !claimStudentId || !claimTitle) {
+        alert("Please complete all required fields.");
+        return;
+    }
+
+    const claimRequests = JSON.parse(localStorage.getItem("claimRequests")) || [];
+
+    const newClaimRequest = {
+        id: Date.now(),
+        itemTitle: claimTitle,
+        itemImage: claimImage,
+        claimantName: claimName,
+        claimantSection: claimSection,
+        claimantEmail: claimEmail,
+        claimantStudentId: claimStudentId,
+        status: "pending"
+    };
+
+    claimRequests.push(newClaimRequest);
+    localStorage.setItem("claimRequests", JSON.stringify(claimRequests));
+
+    const toast = document.getElementById("claimToast");
+
+    if (toast) {
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2500);
+
+        setTimeout(() => {
+            goBack();
+        }, 3000);
+    } else {
+        goBack();
+    }
+}
+</script>
+</body>
+</html>
